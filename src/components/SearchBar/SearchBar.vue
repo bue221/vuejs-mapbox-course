@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useMapStore } from "@/store/mapSlice";
 import { usePlacesStore } from "@/store/placesSlice";
+import type { Feature } from "@/types/places";
 import { ref, watch } from "vue";
 import SearchResult from "../SearchResults/SearchResult.vue";
 
 const placeStore = usePlacesStore();
+const mapStore = useMapStore();
 
 const debouncedValue = ref("");
 const searchTerm = ref("");
@@ -23,10 +26,31 @@ watch(
     }, 800);
   }
 );
+const selectedPlace = ref("");
+
+const select = (place: Feature) => {
+  selectedPlace.value = place.id;
+  const [lng, lat] = place.center;
+  mapStore.map?.flyTo({
+    zoom: 15,
+    center: [lng, lat],
+  });
+};
+
+watch(
+  () => placeStore.places,
+  (newPlaces) => {
+    selectedPlace.value == "";
+    mapStore.generateMarker(newPlaces);
+  }
+);
 </script>
 
 <template>
-  <div class="fixed top-6 left-0 my-auto mx-0">
+  <div
+    v-if="placeStore.isUserLocationReady"
+    class="fixed top-6 left-0 my-auto mx-0"
+  >
     <div class="flex flex-row justify-center">
       <div class="">
         <div
@@ -66,9 +90,13 @@ watch(
     </div>
     <div class="flex justify-center">
       <ul class="bg-white rounded-lg border border-gray-200 w-96 text-gray-900">
-        <SearchResult />
-        <SearchResult />
-        <SearchResult />
+        <SearchResult
+          :class="item.id == selectedPlace ? 'bg-blue-300' : ''"
+          v-for="item in placeStore.places"
+          :key="item.id"
+          :item="item"
+          @click="select(item)"
+        />
       </ul>
     </div>
   </div>

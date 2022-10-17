@@ -23,13 +23,13 @@ const initMap = async () => {
     <h4>Aqui estoy</h4>
     <p>${placeStore.userLocation}</p>
     `);
-    const marker = new mapboxgl.Marker()
+    new mapboxgl.Marker()
       .setLngLat(placeStore.userLocation!)
       .setPopup(popUp)
       .addTo(map);
     // manage state
     mapStore.setMap(map);
-    mapStore.setMarker(marker);
+    // mapStore.setMarker(marker);
   }
 };
 
@@ -43,7 +43,7 @@ watch(
   <template v-if="!placeStore.isUserLocationReady">
     <div class="loading-map">
       <div class="flex h-full justify-center items-center text-center">
-        <div class="" role="status">
+        <div class="text-white">
           <h4 class="">Espere por favor</h4>
           <span class="">localizando ...</span>
         </div>
