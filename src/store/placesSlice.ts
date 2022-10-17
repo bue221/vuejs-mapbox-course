@@ -27,5 +27,8 @@ export const usePlacesStore = defineStore("places", {
         }
       );
     },
+    async setSearchByTerm(query: string) {
+      console.log(query);
+    },
   },
 });
