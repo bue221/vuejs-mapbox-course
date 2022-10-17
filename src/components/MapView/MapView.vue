@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { usePlacesStore } from "@/store/placesSlice";
+import { useMapStore } from "@/store/mapSlice";
 import mapboxgl from "mapbox-gl";
 
 const placeStore = usePlacesStore();
+const mapStore = useMapStore();
+
 const mapElement = ref();
 
 const initMap = async () => {
@@ -20,10 +23,13 @@ const initMap = async () => {
     <h4>Aqui estoy</h4>
     <p>${placeStore.userLocation}</p>
     `);
-    new mapboxgl.Marker()
+    const marker = new mapboxgl.Marker()
       .setLngLat(placeStore.userLocation!)
       .setPopup(popUp)
       .addTo(map);
+    // manage state
+    mapStore.setMap(map);
+    mapStore.setMarker(marker);
   }
 };
 
