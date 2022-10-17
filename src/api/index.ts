@@ -5,8 +5,7 @@ export const searchApi = axios.create({
   params: {
     limit: 5,
     language: "es",
-    access_token:
-      "pk.eyJ1IjoiYnVlMjIxIiwiYSI6ImNsOWNnMmdiNDRiN3Azb253c2JsY2VibjkifQ.HdWJli2gH0TL05ZdCJZ3oQ",
+    access_token: import.meta.env.VITE_API_KEY,
   },
 });
 
@@ -18,7 +17,6 @@ export const directionsApi = axios.create({
     geometries: "geojson",
     overview: "simplified",
     steps: true,
-    access_token:
-      "pk.eyJ1IjoiYnVlMjIxIiwiYSI6ImNsOWNnMmdiNDRiN3Azb253c2JsY2VibjkifQ.HdWJli2gH0TL05ZdCJZ3oQ",
+    access_token: import.meta.env.VITE_API_KEY,
   },
 });
